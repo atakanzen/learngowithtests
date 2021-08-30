@@ -34,7 +34,3 @@ func getPrefix(language string) (prefix string) {
 
 	return
 }
-
-func main() {
-	fmt.Println(Hello("World", ""))
-}
