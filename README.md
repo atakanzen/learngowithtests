@@ -10,7 +10,7 @@ My process on learning Go with TDD. The Goal is to finish one module per day.
 - [x] Integers (28.08.2021)
 - [x] Iteration (28.08.2021)
 - [x] Arrays and Slices (30.08.2021)
-- [ ] Structs, Methods and Interfaces
+- [x] Structs, Methods and Interfaces (31.08.2021)
 - [ ] Pointers and Errors
 - [ ] Maps
 - [ ] Dependency Injection
