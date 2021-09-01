@@ -1,4 +1,4 @@
-// Represents Structures, Methods and Interfaces
+// Package Structures, Methods and Interfaces
 package smi
 
 import "math"

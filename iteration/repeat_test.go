@@ -7,12 +7,6 @@ import (
 )
 
 func TestRepeat(t *testing.T) {
-	assertRepeated := func(t testing.TB, repeated, expected string) {
-		t.Helper()
-		if repeated != expected {
-			t.Errorf("got %q want %q", repeated, expected)
-		}
-	}
 
 	t.Run("repeat with default count", func(t *testing.T) {
 		repeated := iteration.Repeat("a", 0)
@@ -38,4 +32,11 @@ func ExampleRepeat() {
 	repeated := iteration.Repeat("ha", 3)
 	fmt.Println(repeated)
 	//Output: hahaha
+}
+
+func assertRepeated(t testing.TB, repeated, expected string) {
+	t.Helper()
+	if repeated != expected {
+		t.Errorf("got %q want %q", repeated, expected)
+	}
 }

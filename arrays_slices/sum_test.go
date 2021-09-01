@@ -33,12 +33,6 @@ func BenchmarkSum(b *testing.B) {
 }
 
 func TestSumAllTails(t *testing.T) {
-	assertSlices := func(t testing.TB, got, want []int) {
-		t.Helper()
-		if !reflect.DeepEqual(got, want) {
-			t.Errorf("got %q want %q", got, want)
-		}
-	}
 
 	t.Run("sums of not empty slices", func(t *testing.T) {
 		got := as.SumAllTails([]int{1, 2, 3}, []int{0, 1})
@@ -62,5 +56,12 @@ func ExampleSumAllTails() {
 func BenchmarkSumAllTails(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		as.SumAllTails([]int{1, 2, 3}, []int{4, 5, 6}, []int{7, 8, 9})
+	}
+}
+
+func assertSlices(t testing.TB, got, want []int) {
+	t.Helper()
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %q want %q", got, want)
 	}
 }
