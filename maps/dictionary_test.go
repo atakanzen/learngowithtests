@@ -1,7 +1,9 @@
 package maps_test
 
 import (
+	"fmt"
 	"learngowithtests/maps"
+	"strconv"
 	"testing"
 )
 
@@ -26,9 +28,18 @@ func TestSearch(t *testing.T) {
 	})
 }
 
+func ExampleDictionary_Search() {
+	dictionary := maps.Dictionary{"hi": "cześć"}
+	val, err := dictionary.Search("hi")
+	fmt.Println(val)
+	fmt.Println(err)
+	//Output: cześć
+	// <nil>
+}
+
 func TestAdd(t *testing.T) {
 	t.Run("new word", func(t *testing.T) {
-		dictionary := maps.Dictionary{}
+		dictionary := make(maps.Dictionary)
 		err := dictionary.Add(testKey, testValue)
 
 		assertError(t, err, nil)
@@ -42,6 +53,14 @@ func TestAdd(t *testing.T) {
 		assertError(t, err, maps.ErrWordExists)
 		assertDefinition(t, dictionary, testKey, testValue)
 	})
+}
+
+func ExampleDictionary_Add() {
+	dictionary := make(maps.Dictionary)
+	err := dictionary.Add("apple", "jabłko")
+	fmt.Println(err)
+	//Output: <nil>
+
 }
 
 func TestUpdate(t *testing.T) {
@@ -60,6 +79,14 @@ func TestUpdate(t *testing.T) {
 	})
 }
 
+func ExampleDictionary_Update() {
+	dictionary := maps.Dictionary{"motto": "foo"}
+	err := dictionary.Update("motto", "luctor et emergo")
+	fmt.Println(err)
+	//Output: <nil>
+
+}
+
 func TestDelete(t *testing.T) {
 	dictionary := maps.Dictionary{testKey: testValue}
 
@@ -68,6 +95,13 @@ func TestDelete(t *testing.T) {
 	if err != maps.ErrNotFound {
 		t.Errorf("expected %q to be deleted", err)
 	}
+}
+
+func ExampleDictionary_Delete() {
+	dictionary := maps.Dictionary{"delete": "me"}
+	dictionary.Delete("delete")
+	//Output:
+
 }
 
 func assertStrings(t testing.TB, got, want string) {
@@ -97,4 +131,13 @@ func assertDefinition(t testing.TB, dictionary maps.Dictionary, key, definition 
 	if got != definition {
 		t.Errorf("got %q want %q", got, definition)
 	}
+}
+
+func generateBenchmarkDictionary(b *testing.B) maps.Dictionary {
+	dictionary := make(maps.Dictionary, 0)
+	for i := 0; i < b.N; i++ {
+		dictionary.Add(strconv.Itoa(i), strconv.Itoa(i))
+	}
+
+	return dictionary
 }
