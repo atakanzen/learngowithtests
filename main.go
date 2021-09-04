@@ -1,7 +1,11 @@
 package main
 
-import "learngowithtests/hello_world"
+import (
+	di "learngowithtests/dependency_injection"
+	"log"
+	"net/http"
+)
 
 func main() {
-	hello_world.Hello("", "")
+	log.Fatal(http.ListenAndServe(":5000", http.HandlerFunc(di.GreetHandler)))
 }

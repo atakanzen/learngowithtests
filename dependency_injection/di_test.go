@@ -3,6 +3,7 @@ package dependencyinjection_test
 import (
 	"bytes"
 	di "learngowithtests/dependency_injection"
+	"os"
 	"testing"
 )
 
@@ -16,4 +17,22 @@ func TestGreet(t *testing.T) {
 	if got != want {
 		t.Errorf("got %q want %q", got, want)
 	}
+}
+
+func Benchmark(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		di.Greet(os.Stdout, "V")
+	}
+}
+
+func ExampleGreet() {
+
+	// These can be used as a writer as well.
+	// buffer := bytes.Buffer{}
+	// writer := http.ResponseWriter
+
+	stdout := os.Stdout
+	di.Greet(stdout, "strawberries and cherries")
+	//Output: Hello, strawberries and cherries
+
 }

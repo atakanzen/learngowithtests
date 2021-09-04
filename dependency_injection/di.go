@@ -1,10 +1,16 @@
 package dependencyinjection
 
 import (
-	"bytes"
 	"fmt"
+	"io"
+	"net/http"
 )
 
-func Greet(writer *bytes.Buffer, name string) {
+// Greet's given string. Using `io.Writer` as its interface for multiple usages
+func Greet(writer io.Writer, name string) {
 	fmt.Fprintf(writer, "Hello, %s", name)
+}
+
+func GreetHandler(w http.ResponseWriter, r *http.Request) {
+	Greet(w, "World")
 }
