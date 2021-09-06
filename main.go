@@ -1,11 +1,11 @@
 package main
 
 import (
-	di "learngowithtests/dependency_injection"
-	"log"
-	"net/http"
+	"learngowithtests/mocking"
+	"os"
 )
 
 func main() {
-	log.Fatal(http.ListenAndServe(":5000", http.HandlerFunc(di.GreetHandler)))
+	// log.Fatal(http.ListenAndServe(":5000", http.HandlerFunc(di.GreetHandler)))
+	mocking.Countdown(os.Stdout)
 }
