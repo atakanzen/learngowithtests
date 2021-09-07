@@ -14,7 +14,7 @@ My process on learning Go with TDD. The Goal is to finish one module per day.
 - [x] Pointers and Errors (01.09.2021)
 - [x] Maps (02.09.2021)
 - [x] Dependency Injection (04.09.2021)
-- [ ] Mocking
+- [x] Mocking (07.09.2021)
 - [ ] Concurrency
 - [ ] Select
 - [ ] Reflection
