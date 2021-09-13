@@ -19,12 +19,6 @@ func TestGreet(t *testing.T) {
 	}
 }
 
-func Benchmark(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		di.Greet(os.Stdout, "V")
-	}
-}
-
 func ExampleGreet() {
 
 	// These can be used as a writer as well.
