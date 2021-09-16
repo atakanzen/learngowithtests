@@ -1,13 +1,62 @@
 package pbt
 
-import "strings"
+import (
+	"errors"
+	"strings"
+)
 
 type RomanNumeral struct {
-	Value  int
+	Value  uint16
 	Symbol string
 }
 
-var allRomanNumerals = []RomanNumeral{
+type RomanNumerals []RomanNumeral
+
+func (r RomanNumerals) ValueOf(symbols ...byte) uint16 {
+	symbol := string(symbols)
+	for _, s := range r {
+		if s.Symbol == symbol {
+			return s.Value
+		}
+	}
+
+	return 0
+}
+
+func (r RomanNumerals) Exists(symbols ...byte) bool {
+	symbol := string(symbols)
+	for _, s := range r {
+		if s.Symbol == symbol {
+			return true
+		}
+	}
+
+	return false
+}
+
+type windowedRoman string
+
+func (w windowedRoman) Symbols() (symbols [][]byte) {
+	for i := 0; i < len(w); i++ {
+		symbol := w[i]
+		notAtEnd := i+1 < len(w)
+
+		if notAtEnd && isSubtractive(symbol) && allRomanNumerals.Exists(symbol, w[i+1]) {
+			symbols = append(symbols, []byte{symbol, w[i+1]})
+			i++
+		} else {
+			symbols = append(symbols, []byte{symbol})
+		}
+	}
+
+	return
+}
+
+func isSubtractive(currentSymbol uint8) bool {
+	return currentSymbol == 'I' || currentSymbol == 'X' || currentSymbol == 'C'
+}
+
+var allRomanNumerals = RomanNumerals{
 	{1000, "M"},
 	{900, "CM"},
 	{500, "D"},
@@ -23,7 +72,12 @@ var allRomanNumerals = []RomanNumeral{
 	{1, "I"},
 }
 
-func ConvertToRoman(arabic int) string {
+// Converts a numeral represented by Arabic numbers to Roman numeral
+func ConvertToRoman(arabic uint16) (string, error) {
+	if arabic > 3999 {
+		return "", errors.New("can't represent a value greater than 3999")
+	}
+
 	var result strings.Builder
 
 	for _, numeral := range allRomanNumerals {
@@ -33,5 +87,13 @@ func ConvertToRoman(arabic int) string {
 		}
 	}
 
-	return result.String()
+	return result.String(), nil
+}
+
+// Converts a numeral represented by Roman numbers to Arabic numberal
+func ConvertToArabic(roman string) (total uint16) {
+	for _, symbols := range windowedRoman(roman).Symbols() {
+		total += allRomanNumerals.ValueOf(symbols...)
+	}
+	return
 }
