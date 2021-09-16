@@ -20,7 +20,7 @@ My process on learning Go with TDD. The Goal is to finish one module per day.
 - [x] Reflection - [10.09.2021](https://www.onthisday.com/day/september/10)
 - [x] Sync - [13.09.2021](https://www.onthisday.com/day/september/13)
 - [x] Context - [14.09.2021](https://www.onthisday.com/day/september/14)
-- [ ] Intro to Property Based Tests
+- [x] Intro to Property Based Tests - [16.09.2021](https://www.onthisday.com/day/september/16)
 - [ ] Maths
 - [ ] Reading Files
 
