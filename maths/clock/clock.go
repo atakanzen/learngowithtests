@@ -5,9 +5,14 @@ import (
 	"time"
 )
 
-const secondHandLength = 90
-const clockCentreX = 150
-const clockCentreY = 150
+const (
+	secondsInHalfClock = 30
+	secondsInClock     = 2 * secondsInHalfClock
+	minutesInHalfClock = 30
+	minutesInClock     = 2 * minutesInHalfClock
+	hoursInHalfClock   = 6
+	hoursInClock       = 2 * hoursInHalfClock
+)
 
 // A Point represents a two dimensional Cartesian coordinate
 type Point struct {
@@ -15,24 +20,30 @@ type Point struct {
 	Y float64
 }
 
-// SecondHand is the vector of the second hand of an anologue clock at the given time
-func SecondHand(t time.Time) Point {
-	p := secondHandPoint(t)
-	p = Point{p.X * secondHandLength, p.Y * secondHandLength} // Scale to the length of the hand
-	p = Point{p.X, -p.Y}                                      // Flip over X axis to have an origin in the top left hand corner
-	p = Point{p.X + clockCentreX, p.Y + clockCentreY}         // Translate to the right position (150,150)
-
-	return p
+func SecondsInRadians(t time.Time) float64 {
+	return (math.Pi / (secondsInHalfClock / float64(t.Second())))
 }
 
-func secondsInRadians(t time.Time) float64 {
-	return (math.Pi / (30 / float64(t.Second())))
+func SecondHandPoint(t time.Time) Point {
+	return angleToPoint(SecondsInRadians(t))
 }
 
-func secondHandPoint(t time.Time) Point {
-	angle := secondsInRadians(t)
-	x := math.Sin(angle)
-	y := math.Cos(angle)
+func MinutesInRadians(t time.Time) float64 {
+	return (SecondsInRadians(t) / minutesInClock) + (math.Pi / (minutesInHalfClock / float64(t.Minute())))
+}
 
-	return Point{x, y}
+func MinuteHandPoint(t time.Time) Point {
+	return angleToPoint(MinutesInRadians(t))
+}
+
+func HoursInRadians(t time.Time) float64 {
+	return (MinutesInRadians(t) / hoursInClock) + (math.Pi / (hoursInHalfClock / float64(t.Hour()%12)))
+}
+
+func HourHandPoint(t time.Time) Point {
+	return angleToPoint(HoursInRadians(t))
+}
+
+func angleToPoint(angle float64) Point {
+	return Point{X: math.Sin(angle), Y: math.Cos(angle)}
 }
