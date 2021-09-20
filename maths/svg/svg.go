@@ -1,3 +1,4 @@
+// Package svg produces an SVG clock representation of a time.
 package svg
 
 import (
@@ -24,7 +25,8 @@ const (
 	svgEnd = `</svg>`
 )
 
-func SVGWriter(w io.Writer, t time.Time) {
+// Write writes an SVG representation of an analogue clock, showing the time `t`, to the writer `w`
+func Write(w io.Writer, t time.Time) {
 	io.WriteString(w, svgStart)
 	io.WriteString(w, bezel)
 	secondHand(w, t)
@@ -33,21 +35,18 @@ func SVGWriter(w io.Writer, t time.Time) {
 	io.WriteString(w, svgEnd)
 }
 
-// secondHand writes the XML SVG line representation of the second hand of an anologue clock at the given time to the given writer
 func secondHand(w io.Writer, t time.Time) {
 	p := clock.SecondHandPoint(t)
 	p = makeHand(p, secondHandLength)
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:3px;"/>`, p.X, p.Y)
 }
 
-// minuteHand writes the XML SVG line representation of the minute hand of an analogue clock at the given time to the given writer
 func minuteHand(w io.Writer, t time.Time) {
 	p := clock.MinuteHandPoint(t)
 	p = makeHand(p, minuteHandLength)
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#000;stroke-width:3px;"/>`, p.X, p.Y)
 }
 
-// hourHand writes the XML SVG line representation of the hour hand of an analogue clock at the given time to the given writer
 func hourHand(w io.Writer, t time.Time) {
 	p := clock.HourHandPoint(t)
 	p = makeHand(p, hourHandLength)
