@@ -8,5 +8,5 @@ import (
 
 func main() {
 	t := time.Now()
-	svg.SVGWriter(os.Stdout, t)
+	svg.Write(os.Stdout, t)
 }
