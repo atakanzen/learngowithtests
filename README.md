@@ -26,7 +26,7 @@ My process on learning Go with TDD. The Goal is to finish one module per day.
 
 ## Build an application
 
-- [ ] Intro
+- [x] Intro - [22.09.2021](https://www.onthisday.com/day/september/22)
 - [ ] HTTP Server
 - [ ] JSON, Routing and Embedding
 - [ ] IO and Sorting
