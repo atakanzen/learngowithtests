@@ -42,7 +42,7 @@ func TestGETPlayers(t *testing.T) {
 
 	for _, test := range cases {
 		t.Run(test.name, func(t *testing.T) {
-			req := newGetScoreRequest(test.player)
+			req := newRequest(test.player, http.MethodGet)
 			res := httptest.NewRecorder()
 
 			server.ServeHTTP(res, req)
@@ -53,7 +53,7 @@ func TestGETPlayers(t *testing.T) {
 	}
 
 	t.Run("returns 404 on missing players", func(t *testing.T) {
-		req := newGetScoreRequest("non-existing")
+		req := newRequest("non-existing", http.MethodGet)
 		res := httptest.NewRecorder()
 
 		server.ServeHTTP(res, req)
@@ -72,7 +72,7 @@ func TestPOSTStore(t *testing.T) {
 	t.Run("returns status accepted on POST", func(t *testing.T) {
 		player := "Legolas"
 
-		req := newPostScoreRequest(player)
+		req := newRequest(player, http.MethodPost)
 		res := httptest.NewRecorder()
 
 		server.ServeHTTP(res, req)
@@ -89,13 +89,8 @@ func TestPOSTStore(t *testing.T) {
 	})
 
 }
-func newGetScoreRequest(name string) *http.Request {
-	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/players/%s", name), nil)
-	return req
-}
-
-func newPostScoreRequest(name string) *http.Request {
-	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/players/%s", name), nil)
+func newRequest(name, method string) *http.Request {
+	req, _ := http.NewRequest(method, fmt.Sprintf("/players/%s", name), nil)
 	return req
 }
 
