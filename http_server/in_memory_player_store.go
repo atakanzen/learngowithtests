@@ -25,3 +25,10 @@ func (i *InMemoryPlayerStore) PostPlayerScore(name string) {
 	defer i.lock.Unlock()
 	i.store[name]++
 }
+
+func (i *InMemoryPlayerStore) GetLeagueTable() (league []Player) {
+	for name, score := range i.store {
+		league = append(league, Player{name, score})
+	}
+	return
+}

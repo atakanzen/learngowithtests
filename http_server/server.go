@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+const (
+	contentTypeJSON = "application/json"
+)
+
 type Player struct {
 	Name  string
 	Score int
@@ -15,6 +19,7 @@ type Player struct {
 type PlayerStore interface {
 	GetPlayerScore(name string) int
 	PostPlayerScore(name string)
+	GetLeagueTable() []Player
 }
 
 type PlayerServer struct {
@@ -48,14 +53,9 @@ func (p *PlayerServer) playersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (p *PlayerServer) leagueHandler(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(p.getLeagueTable())
+	w.Header().Set("content-type", contentTypeJSON)
+	json.NewEncoder(w).Encode(p.store.GetLeagueTable())
 	w.WriteHeader(http.StatusOK)
-}
-
-func (p *PlayerServer) getLeagueTable() []Player {
-	return []Player{
-		{Name: "Jim", Score: 24},
-	}
 }
 
 func (p *PlayerServer) postScore(w http.ResponseWriter, player string) {
