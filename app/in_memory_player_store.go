@@ -2,16 +2,16 @@ package main
 
 import "sync"
 
+type InMemoryPlayerStore struct {
+	store map[string]int
+	lock  sync.RWMutex
+}
+
 func NewInMemoryPlayerStore() *InMemoryPlayerStore {
 	return &InMemoryPlayerStore{
 		map[string]int{},
 		sync.RWMutex{},
 	}
-}
-
-type InMemoryPlayerStore struct {
-	store map[string]int
-	lock  sync.RWMutex
 }
 
 func (i *InMemoryPlayerStore) GetPlayerScore(name string) int {
