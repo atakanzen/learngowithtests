@@ -7,7 +7,9 @@ import (
 )
 
 func TestPostScoreAndGetScore(t *testing.T) {
-	store := NewInMemoryPlayerStore()
+	db, cleanDb := createTmpFile(t, "")
+	defer cleanDb()
+	store := NewFileSystemPlayerStore(db)
 	server := NewPlayerServer(store)
 	player := "Fredry"
 

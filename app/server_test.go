@@ -24,7 +24,7 @@ func (s *StubPlayerStore) PostPlayerScore(name string) {
 	s.winCalls = append(s.winCalls, name)
 }
 
-func (s *StubPlayerStore) GetLeagueTable() []Player {
+func (s *StubPlayerStore) GetLeague() League {
 	return s.league
 }
 
