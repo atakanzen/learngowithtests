@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -85,7 +84,7 @@ func assertScore(t testing.TB, got, want int) {
 	}
 }
 
-func createTmpFile(t testing.TB, initialData string) (io.ReadWriteSeeker, func()) {
+func createTmpFile(t testing.TB, initialData string) (*os.File, func()) {
 	t.Helper()
 
 	tmpFile, err := ioutil.TempFile("", "db")
