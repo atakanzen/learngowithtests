@@ -20,7 +20,10 @@ func (l League) Find(name string) *Player {
 	return nil
 }
 
-// NewLeague creates a JSON league and returns it
+/*
+  NewLeague creates a league by decoding the given reader and returns it.
+	If there is an error at decoding, it returns nil with the error
+*/
 func NewLeague(r io.Reader) (League, error) {
 	var league []Player
 

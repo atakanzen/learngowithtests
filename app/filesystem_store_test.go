@@ -7,20 +7,29 @@ import (
 )
 
 func TestFileSystemPlayerStore(t *testing.T) {
-	t.Run("league from a reader", func(t *testing.T) {
+	t.Run("works with an empty file", func(t *testing.T) {
+		db, cleanDb := createTmpFile(t, "")
+		defer cleanDb()
+
+		_, err := NewFileSystemPlayerStore(db)
+		assertErrNil(t, err)
+	})
+
+	t.Run("sorted league from a reader", func(t *testing.T) {
 		db, cleanDb := createTmpFile(t, `[
 			{"Name": "Adam", "Score": 25},
 			{"Name": "Karina", "Score": 90}
 		]`)
 		defer cleanDb()
 
-		store := NewFileSystemPlayerStore(db)
+		store, err := NewFileSystemPlayerStore(db)
+		assertErrNil(t, err)
 
 		got := store.GetLeague()
 
 		want := []Player{
-			{"Adam", 25},
 			{"Karina", 90},
+			{"Adam", 25},
 		}
 
 		assertLeagueBody(t, got, want)
@@ -33,7 +42,8 @@ func TestFileSystemPlayerStore(t *testing.T) {
 		]`)
 		defer cleanDb()
 
-		store := NewFileSystemPlayerStore(db)
+		store, err := NewFileSystemPlayerStore(db)
+		assertErrNil(t, err)
 
 		got := store.GetPlayerScore("Kate")
 
@@ -49,7 +59,8 @@ func TestFileSystemPlayerStore(t *testing.T) {
 		]`)
 		defer cleanDb()
 
-		store := NewFileSystemPlayerStore(db)
+		store, err := NewFileSystemPlayerStore(db)
+		assertErrNil(t, err)
 
 		store.PostPlayerScore("Katia")
 
@@ -65,7 +76,8 @@ func TestFileSystemPlayerStore(t *testing.T) {
 		]`)
 		defer cleanDb()
 
-		store := NewFileSystemPlayerStore(db)
+		store, err := NewFileSystemPlayerStore(db)
+		assertErrNil(t, err)
 
 		store.PostPlayerScore("Nastya")
 
@@ -81,6 +93,14 @@ func assertScore(t testing.TB, got, want int) {
 
 	if got != want {
 		t.Errorf("got score %d, want %d", got, want)
+	}
+}
+
+func assertErrNil(t testing.TB, got error) {
+	t.Helper()
+
+	if got != nil {
+		t.Errorf("did not expect error, but got one %q,", got)
 	}
 }
 
