@@ -11,22 +11,26 @@ const (
 	contentTypeJSON = "application/json"
 )
 
+// Player is a structure that represents a player with its Name and Score fields
 type Player struct {
 	Name  string
 	Score int
 }
 
+// PlayerStore is an interface that implements FileSystemPlayerStore's functions
 type PlayerStore interface {
 	GetPlayerScore(name string) int
 	PostPlayerScore(name string)
 	GetLeague() League
 }
 
+// PlayerServer is a struct that has PlayerStore and http.Handler fields
 type PlayerServer struct {
 	store PlayerStore
 	http.Handler
 }
 
+// NewPlayerServer returns a player server with the given PlayerStore
 func NewPlayerServer(store PlayerStore) *PlayerServer {
 	p := new(PlayerServer)
 

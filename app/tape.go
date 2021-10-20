@@ -4,6 +4,7 @@ import (
 	"os"
 )
 
+// tape is a struct that has a os.File field. This is for writing less data than current file data, or for such cases as editing or deleting data.
 type tape struct {
 	file *os.File
 }
