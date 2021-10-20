@@ -29,7 +29,7 @@ My process on learning Go with TDD. The Goal is to finish one module per day.
 - [x] Intro - [22.09.2021](https://www.onthisday.com/day/september/22)
 - [x] HTTP Server - [29.09.2021](https://www.onthisday.com/day/september/29)
 - [x] JSON, Routing and Embedding - [6.10.2021](https://www.onthisday.com/day/october/6)
-- [ ] IO and Sorting
+- [x] IO and Sorting - [20.10.2021](https://www.onthisday.com/day/october/20)
 - [ ] Command line and Package structure
 - [ ] Time
 - [ ] WebSockets
