@@ -1,10 +1,16 @@
-package main
+package store
 
 import (
 	"encoding/json"
 	"fmt"
 	"io"
 )
+
+// Player is a structure that represents a player with its Name and Score fields
+type Player struct {
+	Name  string
+	Score int
+}
 
 // League stores a collection of players
 type League []Player
@@ -21,8 +27,7 @@ func (l League) Find(name string) *Player {
 }
 
 /*
-  NewLeague creates a league by decoding the given reader and returns it.
-	If there is an error at decoding, it returns nil with the error
+  NewLeague creates a league by decoding the given reader and returns it. If there is an error at decoding, it returns nil with the error
 */
 func NewLeague(r io.Reader) (League, error) {
 	var league []Player

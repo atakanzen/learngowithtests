@@ -1,4 +1,4 @@
-package main
+package store
 
 import (
 	"encoding/json"
@@ -9,8 +9,8 @@ import (
 
 // FileSystemPlayerStore includes a file (database) and a league, and provides read and write actions.
 type FileSystemPlayerStore struct {
-	db     *json.Encoder
-	league League
+	DB     *json.Encoder
+	League League
 }
 
 // NewFileSystemPlayerStore creates a FileSystemPlayerStore with given file.
@@ -26,22 +26,22 @@ func NewFileSystemPlayerStore(file *os.File) (*FileSystemPlayerStore, error) {
 	}
 
 	return &FileSystemPlayerStore{
-		db:     json.NewEncoder(&tape{file}),
-		league: league,
+		DB:     json.NewEncoder(&Tape{file}),
+		League: league,
 	}, nil
 }
 
 // GetLeague returns the league of current FileSystemPlayerStore
 func (f *FileSystemPlayerStore) GetLeague() League {
-	sort.Slice(f.league, func(i, j int) bool {
-		return f.league[i].Score > f.league[j].Score
+	sort.Slice(f.League, func(i, j int) bool {
+		return f.League[i].Score > f.League[j].Score
 	})
-	return f.league
+	return f.League
 }
 
 // GetPlayerScore returns the given player's score from FileSystemPlayerStore
 func (f *FileSystemPlayerStore) GetPlayerScore(name string) int {
-	player := f.league.Find(name)
+	player := f.League.Find(name)
 
 	if player != nil {
 		return player.Score
@@ -53,15 +53,15 @@ func (f *FileSystemPlayerStore) GetPlayerScore(name string) int {
 // PostPlayerScore increments the given player's score at FileSystemPlayerStore
 func (f *FileSystemPlayerStore) PostPlayerScore(name string) {
 
-	player := f.league.Find(name)
+	player := f.League.Find(name)
 
 	if player != nil {
 		player.Score++
 	} else {
-		f.league = append(f.league, Player{name, 1})
+		f.League = append(f.League, Player{Name: name, Score: 1})
 	}
 
-	f.db.Encode(f.league)
+	f.DB.Encode(f.League)
 }
 
 func initialisePlayerDBFile(file *os.File) error {

@@ -1,15 +1,17 @@
-package main
+package store_test
 
 import (
 	"io/ioutil"
+	"learngowithtests/app/helper"
+	"learngowithtests/app/store"
 	"testing"
 )
 
 func TestTape_Write(t *testing.T) {
-	file, clean := createTmpFile(t, "12345")
+	file, clean := helper.CreateTmpFile(t, "12345")
 	defer clean()
 
-	tape := &tape{file}
+	tape := &store.Tape{file}
 	tape.Write([]byte("abc"))
 
 	file.Seek(0, 0)
