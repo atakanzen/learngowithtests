@@ -31,6 +31,24 @@ func NewFileSystemPlayerStore(file *os.File) (*FileSystemPlayerStore, error) {
 	}, nil
 }
 
+func NewFileSystemPlayerStoreFromFile(path string) (*FileSystemPlayerStore, func(), error) {
+	db, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0666)
+	if err != nil {
+		return nil, nil, fmt.Errorf("could not open file %s, %v", path, err)
+	}
+
+	closeFunc := func() {
+		db.Close()
+	}
+
+	playerStore, err := NewFileSystemPlayerStore(db)
+	if err != nil {
+		return nil, nil, fmt.Errorf("could not create file system player store, %v", err)
+	}
+
+	return playerStore, closeFunc, nil
+}
+
 // GetLeague returns the league of current FileSystemPlayerStore
 func (f *FileSystemPlayerStore) GetLeague() League {
 	sort.Slice(f.League, func(i, j int) bool {

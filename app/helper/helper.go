@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io/ioutil"
 	"learngowithtests/app/store"
+	"learngowithtests/app/store/mock"
 	"os"
 	"reflect"
 	"testing"
@@ -63,6 +64,18 @@ func AssertErrNil(t testing.TB, got error) {
 
 	if got != nil {
 		t.Errorf("did not expect error, but got one %q,", got)
+	}
+}
+
+func AssertPlayerWin(t testing.TB, playerStore *mock.StubPlayerStore, winner string) {
+	t.Helper()
+
+	if len(playerStore.WinCalls) != 1 {
+		t.Errorf("got %d calls to PostPlayerScore, want %d", len(playerStore.WinCalls), 1)
+	}
+
+	if playerStore.WinCalls[0] != winner {
+		t.Errorf("didn't record correct winner, got %q want %q", playerStore.WinCalls[0], winner)
 	}
 }
 

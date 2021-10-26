@@ -42,10 +42,10 @@ func TestFileSystemPlayerStore(t *testing.T) {
 		]`)
 		defer cleanDb()
 
-		store, err := store.NewFileSystemPlayerStore(db)
+		playerStore, err := store.NewFileSystemPlayerStore(db)
 		helper.AssertErrNil(t, err)
 
-		got := store.GetPlayerScore("Kate")
+		got := playerStore.GetPlayerScore("Kate")
 
 		want := 22
 
@@ -59,12 +59,12 @@ func TestFileSystemPlayerStore(t *testing.T) {
 		]`)
 		defer cleanDb()
 
-		store, err := store.NewFileSystemPlayerStore(db)
+		playerStore, err := store.NewFileSystemPlayerStore(db)
 		helper.AssertErrNil(t, err)
 
-		store.PostPlayerScore("Katia")
+		playerStore.PostPlayerScore("Katia")
 
-		got := store.GetPlayerScore("Katia")
+		got := playerStore.GetPlayerScore("Katia")
 		want := 6
 
 		helper.AssertScore(t, got, want)
@@ -76,12 +76,12 @@ func TestFileSystemPlayerStore(t *testing.T) {
 		]`)
 		defer cleanDb()
 
-		store, err := store.NewFileSystemPlayerStore(db)
+		playerStore, err := store.NewFileSystemPlayerStore(db)
 		helper.AssertErrNil(t, err)
 
-		store.PostPlayerScore("Nastya")
+		playerStore.PostPlayerScore("Nastya")
 
-		got := store.GetPlayerScore("Nastya")
+		got := playerStore.GetPlayerScore("Nastya")
 		want := 1
 
 		helper.AssertScore(t, got, want)

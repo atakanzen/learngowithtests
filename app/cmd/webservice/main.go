@@ -6,22 +6,16 @@ import (
 	"learngowithtests/app/store"
 	"log"
 	"net/http"
-	"os"
 )
 
-const dbFileName = "game.db.json"
+const dbFileName = "game.web.db.json"
 
 func main() {
-	db, err := os.OpenFile(fmt.Sprintf("../../db/%s", dbFileName), os.O_RDWR|os.O_CREATE, 0666)
-
+	playerStore, close, err := store.NewFileSystemPlayerStoreFromFile(fmt.Sprintf("../../db/%s", dbFileName))
 	if err != nil {
-		log.Fatalf("could not open %s, %v", dbFileName, err)
+		log.Fatal(err)
 	}
-
-	playerStore, err := store.NewFileSystemPlayerStore(db)
-	if err != nil {
-		log.Fatalf("could not create FS player store, %v", err)
-	}
+	defer close()
 
 	playerServer := server.NewPlayerServer(playerStore)
 

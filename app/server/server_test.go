@@ -5,38 +5,20 @@ import (
 	"learngowithtests/app/helper"
 	"learngowithtests/app/server"
 	"learngowithtests/app/store"
+	"learngowithtests/app/store/mock"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
-type StubPlayerStore struct {
-	Scores   map[string]int
-	WinCalls []string
-	League   store.League
-}
-
-func (s *StubPlayerStore) GetPlayerScore(name string) int {
-	score := s.Scores[name]
-	return score
-}
-
-func (s *StubPlayerStore) PostPlayerScore(name string) {
-	s.WinCalls = append(s.WinCalls, name)
-}
-
-func (s *StubPlayerStore) GetLeague() store.League {
-	return s.League
-}
-
 func TestGETPlayerScore(t *testing.T) {
-	playerStore := &StubPlayerStore{
-		map[string]int{
+	playerStore := &mock.StubPlayerStore{
+		Scores: map[string]int{
 			"Legolas": 20,
 			"Gimli":   12,
 		},
-		nil,
-		nil,
+		WinCalls: nil,
+		League:   nil,
 	}
 	playerServer := server.NewPlayerServer(playerStore)
 	cases := []struct {
@@ -72,10 +54,10 @@ func TestGETPlayerScore(t *testing.T) {
 }
 
 func TestPOSTPlayerScore(t *testing.T) {
-	playerStore := &StubPlayerStore{
-		map[string]int{},
-		nil,
-		nil,
+	playerStore := &mock.StubPlayerStore{
+		Scores:   map[string]int{},
+		WinCalls: nil,
+		League:   nil,
 	}
 	playerServer := server.NewPlayerServer(playerStore)
 
@@ -88,14 +70,7 @@ func TestPOSTPlayerScore(t *testing.T) {
 		playerServer.ServeHTTP(res, req)
 
 		helper.AssertResCode(t, res.Code, http.StatusAccepted)
-
-		if len(playerStore.WinCalls) != 1 {
-			t.Errorf("got %d calls to PostPlayerScore, want %d", len(playerStore.WinCalls), 1)
-		}
-
-		if playerStore.WinCalls[0] != player {
-			t.Errorf("did not store correct winner got %q want %q", playerStore.WinCalls[0], player)
-		}
+		helper.AssertPlayerWin(t, playerStore, player)
 	})
 }
 
@@ -108,7 +83,11 @@ func TestGetLeague(t *testing.T) {
 			{Name: "Bill", Score: 3},
 		}
 
-		playerStore := &StubPlayerStore{nil, nil, wantedLeague}
+		playerStore := &mock.StubPlayerStore{
+			Scores:   nil,
+			WinCalls: nil,
+			League:   wantedLeague,
+		}
 		playerServer := server.NewPlayerServer(playerStore)
 
 		req := newLeagueRequest()
