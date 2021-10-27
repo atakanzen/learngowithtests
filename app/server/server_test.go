@@ -3,9 +3,9 @@ package server_test
 import (
 	"fmt"
 	"learngowithtests/app/helper"
+	"learngowithtests/app/mock"
 	"learngowithtests/app/server"
 	"learngowithtests/app/store"
-	"learngowithtests/app/store/mock"
 	"net/http"
 	"net/http/httptest"
 	"testing"

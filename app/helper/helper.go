@@ -3,8 +3,8 @@ package helper
 import (
 	"bytes"
 	"io/ioutil"
+	"learngowithtests/app/mock"
 	"learngowithtests/app/store"
-	"learngowithtests/app/store/mock"
 	"os"
 	"reflect"
 	"testing"

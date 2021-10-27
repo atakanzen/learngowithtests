@@ -5,21 +5,29 @@ import (
 	"io"
 	"learngowithtests/app/server"
 	"strings"
+	"time"
 )
 
-type CLI struct {
-	playerStore server.PlayerStore
-	in          *bufio.Scanner
+type BlindAlerter interface {
+	ScheduleAlertAt(time.Duration, int)
 }
 
-func NewCLI(playerStore server.PlayerStore, in io.Reader) *CLI {
+type CLI struct {
+	playerStore  server.PlayerStore
+	in           *bufio.Scanner
+	blindAlerter BlindAlerter
+}
+
+func NewCLI(playerStore server.PlayerStore, in io.Reader, blindAlerter BlindAlerter) *CLI {
 	return &CLI{
-		playerStore: playerStore,
-		in:          bufio.NewScanner(in),
+		playerStore:  playerStore,
+		in:           bufio.NewScanner(in),
+		blindAlerter: blindAlerter,
 	}
 }
 
 func (c *CLI) PlayPoker() {
+	c.blindAlerter.ScheduleAlertAt(5*time.Second, 100)
 	userInput := c.readLine()
 	c.playerStore.PostPlayerScore(extractWinner(userInput))
 }
