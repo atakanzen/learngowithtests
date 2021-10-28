@@ -67,6 +67,18 @@ func AssertErrNil(t testing.TB, got error) {
 	}
 }
 
+func AssertScheduledAlert(t testing.TB, got, want mock.ScheduledAlert) {
+	amountGot := got.BetAmount
+	if amountGot != want.BetAmount {
+		t.Fatalf("got amount %d, want %d", amountGot, want.BetAmount)
+	}
+
+	gotScheduledTime := got.At
+	if gotScheduledTime != want.At {
+		t.Fatalf("got scheduled time of %v, want %v", gotScheduledTime, want.At)
+	}
+}
+
 func AssertPlayerWin(t testing.TB, playerStore *mock.StubPlayerStore, winner string) {
 	t.Helper()
 

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"learngowithtests/app/mock"
 	"learngowithtests/app/poker"
 	"learngowithtests/app/store"
 	"log"
@@ -10,8 +9,6 @@ import (
 )
 
 const dbFileName = "game.cli.db.json"
-
-var dummyAlerter = &mock.SpyBlindAlerter{}
 
 func main() {
 
@@ -24,6 +21,6 @@ func main() {
 	}
 	defer close()
 
-	game := poker.NewCLI(playerStore, os.Stdin, dummyAlerter)
+	game := poker.NewCLI(playerStore, os.Stdin, poker.BlindAlerterFunc(poker.StdOutAlerter))
 	game.PlayPoker()
 }
